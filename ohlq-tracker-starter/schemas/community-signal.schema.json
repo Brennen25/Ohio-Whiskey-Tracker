@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CommunitySignalExtraction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_kind",
+    "summary",
+    "store_mentions",
+    "product_mentions",
+    "claim_time_window",
+    "firsthand_likelihood",
+    "speculative_likelihood",
+    "actionability",
+    "needs_manual_review"
+  ],
+  "properties": {
+    "source_kind": {
+      "type": "string",
+      "enum": ["reddit_post", "reddit_comment", "x_post"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "store_mentions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["raw_text", "normalized_name_guess", "city_guess", "confidence"],
+        "properties": {
+          "raw_text": {"type": "string"},
+          "normalized_name_guess": {"type": ["string", "null"]},
+          "city_guess": {"type": ["string", "null"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "product_mentions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["raw_text", "normalized_product_guess", "alias_type", "confidence"],
+        "properties": {
+          "raw_text": {"type": "string"},
+          "normalized_product_guess": {"type": ["string", "null"]},
+          "alias_type": {"type": ["string", "null"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "claim_time_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "text", "start_local", "end_local"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["exact", "approximate", "same_day", "next_day", "unknown"]
+        },
+        "text": {"type": ["string", "null"]},
+        "start_local": {"type": ["string", "null"]},
+        "end_local": {"type": ["string", "null"]}
+      }
+    },
+    "quantity_limit_mentions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "line_or_queue_mentions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "firsthand_likelihood": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "speculative_likelihood": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "actionability": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "contradiction_flags": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "needs_manual_review": {
+      "type": "boolean"
+    }
+  }
+}
